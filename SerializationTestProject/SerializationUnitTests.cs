@@ -8,6 +8,10 @@ namespace SerializationTestProject
     [TestClass]
     public class SerializationUnitTests
     {
+        
+        /// <summary>
+        /// Test serialization to and from byte arrays
+        /// </summary>
         [TestMethod]
         public void TestObjectSerialization()
         {
@@ -28,6 +32,9 @@ namespace SerializationTestProject
             }
         }
 
+        /// <summary>
+        /// Test object deserialization to and from files
+        /// </summary>
         [TestMethod]
         public void TestObjectSerializationToAndFromFile()
         {
