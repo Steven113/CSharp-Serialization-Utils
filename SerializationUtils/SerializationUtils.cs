@@ -17,8 +17,9 @@ namespace SerializationUtils
         /// <param name="fileName"></param>
         /// <param name="objectToLoadDataInto"></param>
         /// <returns></returns>
-        public static bool DeserializeFromFile<T>(string fileName, ref T objectToLoadDataInto) where T : class
+        public static bool DeserializeFromFile<T>(string fileName, out T objectToLoadDataInto) where T : class
         {
+            objectToLoadDataInto = default(T);
             if (File.Exists(fileName))
             {//first confirm that the file exists
                 using (Stream dataStream = File.OpenRead(fileName))
@@ -40,7 +41,7 @@ namespace SerializationUtils
         /// <typeparam name="T"></typeparam>
         /// <param name="fileName"></param>
         /// <param name="objectToLoadDataInto"></param>
-        public static void SerializeToFile<T>(string fileName, ref T objectToLoadDataInto) where T : class
+        public static void SerializeToFile<T>(string fileName, T objectToLoadDataInto) where T : class
         {
             using (Stream stream = File.OpenWrite(fileName /*+ "_"+ ((int)(System.DateTime.Now.ToOADate()*1000))+ ".qsf"*/)) //en sure that stream is cleaned up by creating it in a using statement - the stream will be cleaned up at the end of the using block
             {

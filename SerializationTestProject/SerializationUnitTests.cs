@@ -23,11 +23,17 @@ namespace SerializationTestProject
                 $"Apparently this won't work with Siverlight:{Environment.NewLine}So apparently Silverlight does not have the BinaryFormatter. However an open source project exists that may be able to provide similar functionality for you. It is called sharpSerializer. It will work with Silverlight and WP7.'"
             };
 
-            
-            foreach (string data in testStrings)
+            TestObjectSerialization(testStrings);
+        }
+
+        public void TestObjectSerialization<T>(T [] testObjects)
+        {
+
+
+            foreach (T data in testObjects)
             {
-                Debug.Assert(data.Equals(SerializationUtils.SerializationUtils.DeserializeFromByteArray<string>(SerializationUtils.SerializationUtils.SerializeToByteArray (data))));
-                
+                Debug.Assert(data.Equals(SerializationUtils.SerializationUtils.DeserializeFromByteArray<T>(SerializationUtils.SerializationUtils.SerializeToByteArray(data))));
+
 
             }
         }
@@ -46,19 +52,30 @@ namespace SerializationTestProject
                 $"Apparently this won't work with Siverlight:{Environment.NewLine}So apparently Silverlight does not have the BinaryFormatter. However an open source project exists that may be able to provide similar functionality for you. It is called sharpSerializer. It will work with Silverlight and WP7.'"
             };
 
+            TestObjectSerializationToAndFromFile<string>(testStrings);
+        }
+
+        /// <summary>
+        /// Generic serialization and deserialization test for a given class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="testObjects"></param>
+        public void TestObjectSerializationToAndFromFile<T>(T [] testObjects) where T : class
+        {
+            
             int testNum = 0;
-            foreach (string data in testStrings)
+            foreach (T data in testObjects)
             {
                 ++testNum;
 
-                string temp = data;
+                T temp = data;
 
                 //create a unique file name for the test, one that should not exist
                 string fileName = $"SerializationTestFileName{testNum}{DateTime.Now.Ticks}";
 
-                SerializationUtils.SerializationUtils.SerializeToFile<string>(fileName, ref temp);
-                string deserializedTemp = "";
-                Debug.Assert(SerializationUtils.SerializationUtils.DeserializeFromFile<string>(fileName, ref deserializedTemp));
+                SerializationUtils.SerializationUtils.SerializeToFile<T>(fileName, temp);
+                T deserializedTemp = default(T);
+                Debug.Assert(SerializationUtils.SerializationUtils.DeserializeFromFile<T>(fileName, out deserializedTemp));
 
                 Debug.Assert(data.Equals(deserializedTemp));
 
